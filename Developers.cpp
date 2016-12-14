@@ -14,10 +14,15 @@ Developer::Developer()
 	ready_load = false ; //wait load to dev
 	moved_pos = 0;
 	weight_cur = 0;
+	id_dev = 0;
 }
 void Developer::setTransp(Transport * tr)
 {
 	transp = tr;
+}
+void Developer::setId(int id)
+{
+	id_dev = id;
 }
 std::string Developer::getString()
 {
@@ -80,7 +85,7 @@ DeveloperStatic::DeveloperStatic()
 	start_pos_to_transp = 100;
 	cnt_dev = 5;
 	cur_dev = 0;
-	test_fail = true;
+	test_fail = false;
 	time_run = new float[cnt_dev];
 	speed_unload = new float[cnt_dev];
 	time_run[0] = 720;
@@ -107,6 +112,10 @@ std::string DeveloperStatic::getString()
 	    speed_unload[cur_dev], time_run[cur_dev], start_pos_to_transp);
    	tmp = buf;
 	return tmp;			
+}
+void DeveloperStatic::setId(int id)
+{
+	id_dev = id;
 }
 void DeveloperStatic::loadWeightToTransp()
 {

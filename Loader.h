@@ -1,13 +1,13 @@
 #pragma once
-#include "DevLoadAbstr.h"
 #include <string>
-class Loader: public DevLoadAbstr
+class Loader
 {
 private:
 	float weight_cur;
 	int time_unload; // 150s
 	float weight_unload; // 20000t	
 	int timer;
+	int id_loader;
 public:
 	Loader()
 	{
@@ -15,6 +15,10 @@ public:
 		time_unload = 150;
 		weight_unload = 20000;
 		timer = 0;
+	}
+	void setId(int id)
+	{
+		id_loader = id;
 	}
 	void getWeight(float weight)
 	{

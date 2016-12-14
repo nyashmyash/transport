@@ -33,7 +33,11 @@ public:
 	void setToTransp(Transport *tr, float pos);
 	std::string getString();
 	void setItems(int cnt);
+	void setId(int id);
 	~Transport() ;
+	void setSpeed(float speed_);
+	float getSpeed();
+	
 	
 };
 struct RouteSwitch

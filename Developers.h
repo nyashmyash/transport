@@ -1,10 +1,10 @@
 #pragma once
-#include "DevLoadAbstr.h"
 #include "Transport.h"
 
-class Developer: public DevLoadAbstr
+class Developer
 {
 private:
+	int id_dev;
 	float weight_max;//15000t
 	float weight_cur;
 	int time_load; // 300s
@@ -21,14 +21,16 @@ private:
 				
 public:
 	Developer();
+	void setId(int id);
 	void setTransp(Transport * transp);
-	virtual void loadWeightToTransp();
-	virtual std::string getString();
+	void loadWeightToTransp();
+	std::string getString();
 	
 };
-class DeveloperStatic: public DevLoadAbstr
+class DeveloperStatic
 {
 private:
+	int id_dev;
 	float* time_run; //720s 4000s 500s 1500s 4000s
 	float* speed_unload; //80t 88t 0t 83t 0t	
 	int cnt_dev;
@@ -40,8 +42,8 @@ private:
 public:	
 	DeveloperStatic();
 	void setTransp(Transport * transp);
-	
-	virtual std::string getString();
-	virtual void loadWeightToTransp();
+	void setId(int id);
+	std::string getString();
+	void loadWeightToTransp();
 	~DeveloperStatic();
 };
