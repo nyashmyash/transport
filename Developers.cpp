@@ -2,6 +2,7 @@
 #include <stdlib.h>
 Developer::Developer()
 {
+	weight_unload = 0;
 	test_fail = false;
 	timer = 0;
 	weight_max = 15000;
@@ -28,9 +29,12 @@ std::string Developer::getString()
 {
 	std::string tmp;
 	char buf[1000];
-   	snprintf(buf, 1000, "moved pos=%.2f, current weight=%.2f,weight max=%.2f, timer=%d, speed =%.2f ,speed unload=%.2f, lenght to transp=%.2f, point on transp=%.2f, time load=%d, time unload=%d\n" 
-	   ,moved_pos, weight_cur,weight_max, timer,  speed,speed_unload, len_to_transp, start_pos_to_transp,time_load,time_unload);
-   	tmp = buf;
+   /*	snprintf(buf, 1000, "to TR%d, p.=%.0f, w.=%.0f,w. m.=%.0f, t=%d, s=%.0f ,s. u.=%.0f, l. tr.=%.0f, p. tr.=%.0f, t. l.=%d, t. u.=%d\n" 
+	   ,transp->getId(),moved_pos, weight_cur,weight_max, timer,  speed,speed_unload, len_to_transp, start_pos_to_transp,time_load,time_unload);
+   	*/
+   	snprintf(buf, 1000, "to TR%d, pos.=%.0f,c. w.=%.0f, u. w.=%.0f,s. u.=%.0f\n" 
+	   ,transp->getId(), start_pos_to_transp, weight_cur,weight_unload, speed_unload);
+	tmp = buf;
 	return tmp;			
 }
 void Developer::loadWeightToTransp()
@@ -53,6 +57,7 @@ void Developer::loadWeightToTransp()
 			if (timer<=time_load && !ready_load)
 			{
 				weight_cur+=weight_max/time_load;
+				weight_unload+=weight_max/time_load;
 			}
 			else
 			{
@@ -83,6 +88,7 @@ void Developer::loadWeightToTransp()
 DeveloperStatic::DeveloperStatic()
 {
 	start_pos_to_transp = 100;
+	weight_unload = 0;
 	cnt_dev = 5;
 	cur_dev = 0;
 	test_fail = false;
@@ -108,8 +114,8 @@ std::string DeveloperStatic::getString()
 {
 	std::string tmp;
 	char buf[1000];
-   	snprintf(buf, 1000, "speed unload=%.2f, time load=%.2f, point on transp=%.2f\n",
-	    speed_unload[cur_dev], time_run[cur_dev], start_pos_to_transp);
+   	snprintf(buf, 1000, "to TR%d, pos.=%.0f, u. w.=%.0f, s. u.=%.0f, t. l.=%.0f\n",
+	    transp->getId(), start_pos_to_transp, weight_unload, speed_unload[cur_dev], time_run[cur_dev]);
    	tmp = buf;
 	return tmp;			
 }
@@ -146,6 +152,7 @@ void DeveloperStatic::loadWeightToTransp()
 		int rnd = rand()%2000;
 		if (rnd>1900)
 			cur_speed+=rnd;
+		weight_unload+=cur_speed;
 	}
 	
 	transp->getWeightFromAny(cur_speed, start_pos_to_transp);

@@ -16,6 +16,7 @@ private:
 	bool is_load;
 	bool is_unload;
 	int cnt_items;
+	float weight_unload;
 	Transport * to_transp;
 	float pos_to_transp;
 	RouteSwitch * to_switch;
@@ -34,6 +35,8 @@ public:
 	std::string getString();
 	void setItems(int cnt);
 	void setId(int id);
+	void setLenght(int len);
+	int getId();
 	~Transport() ;
 	void setSpeed(float speed_);
 	float getSpeed();
@@ -44,13 +47,23 @@ struct RouteSwitch
 {
 	int timer;
 	int cur_switch;
+	int id_sw;
 	Transport * left;
 	Transport *right;
 	RouteSwitch()
 	{
+		id_sw = 0;
 		left = 0;
 		right = 0;
 		cur_switch = 0;
+	}
+	void setId(int id)
+	{
+		id_sw = id;
+	}
+	int getId()
+	{
+		return id_sw;
 	}
 	Transport * getSwitch()
 	{

@@ -7,6 +7,7 @@ Transport::Transport()
 	to_switch = 0;
 	to_loader = 0;
 	cur_weight = 0;
+	weight_unload = 0;
 	is_moved = false;
 	speed = 4;
 	lenght = 500;
@@ -44,11 +45,17 @@ float Transport::getSpeed()
 {
 	return speed;
 }
+void Transport::setLenght(int len)
+{
+	delete [] items;
+	lenght = len;
+	cnt_items = lenght/10;
+	setItems(cnt_items);
+}
 void Transport::moveTranspItems()
 {
 	bool tmp = false;
-//	if(to_transp)
-//		tmp = gtimer%((int)(10/to_transp->getSpeed())+1)== (int)(10/to_transp->getSpeed()) ;
+
 	if (gtimer%((int)(10/speed))== 0 && !is_moved)
 	{
 
@@ -59,6 +66,7 @@ void Transport::moveTranspItems()
 			if(to_switch)
 				to_switch->getSwitch()->getWeightFromAny(items[cnt_items-1], pos_to_transp);
 			cur_weight -= items[cnt_items-1];
+			weight_unload += items[cnt_items-1];
 			
 		for(int i = cnt_items-1; i>0;i--)
 				items[i]= items[i-1];	
@@ -90,20 +98,34 @@ std::string Transport::getString()
 {
 	std::string tmp;
 	char buf[1000];
-  		snprintf(buf, 1000, "current weight=%.2f, speed=%.2f, lenght=%.2f, pog weight=%.2F, max weight =%.2f, pos to transp=%.2f\n", cur_weight, speed, lenght, pog_weight, max_weight,pos_to_transp);
-  		tmp = buf;
-  		
-	for (int i=0; i < cnt_items; i++)
+/*	if (to_transp)
+  		snprintf(buf, 1000, "to TR%d, pos %.0f, c. w=%.0f, s=%.0f, l=%.0f, pw=%.0F, mw=%.0f, to=%.0f\n",to_transp->getId(),pos_to_transp,cur_weight, speed, lenght, pog_weight, max_weight);
+  	if (to_loader)
+  		snprintf(buf, 1000, "to LR%d, c. w=%.0f, s=%.0f, l=%.0f, pw=%.0f, mw=%.0f\n", to_loader->getId(),cur_weight, speed, lenght, pog_weight, max_weight);
+  */
+  	for (int i=0; i < cnt_items; i++)
 	{
-		if (items[i]!=0)
+		if(i%2==0)
 		{
-			char buf[10];
-			snprintf(buf, 10,"|%.0f", items[i]);
-			tmp+=buf;
+			if (items[i]!=0)
+			{
+				/*char buf[10];
+				snprintf(buf, 10,"|%.0f", items[i]+items[i+1]);
+				tmp+=buf;*/
+				tmp += '#';
+			}
+			else
+				tmp+="_";
 		}
-		else
-			tmp+="___";
-	}
+	}		
+	if (to_transp)
+  		snprintf(buf, 1000, "to TR%d, pos.= %.0f, c. w.=%.0f, u. w.=%.0f",to_transp->getId(),pos_to_transp,cur_weight, weight_unload);
+  	if (to_loader)
+  		snprintf(buf, 1000, "to LR%d, c. w.=%.0f, u. w.=%.0f", to_loader->getId(),cur_weight, weight_unload);
+  	
+	tmp += buf;
+  		
+
 	tmp+='\n';
 	return tmp;		
 }
@@ -118,6 +140,10 @@ void Transport::setItems(int cnt)
 void Transport::setId(int id)
 {
 	id_transp = id;
+}
+int Transport::getId()
+{
+	return id_transp;
 }
 Transport::~Transport() 
 {
